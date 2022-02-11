@@ -1,0 +1,21 @@
+name: CI
+
+on:  
+  push:
+    branches:
+      - 'test-nginx11-fix'
+
+jobs:
+  ci: 
+    runs-on: ubuntu-latest
+    container:
+      image: rancher/dapper:v0.5.3
+      env:
+        GIT_IN_DAPPER: true
+        DOCKER_USER: ${{ secrets.docker_username }}
+        DOCKER_PASS: ${{ secrets.docker_password }}
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+    steps:
+      - run: |
+          dapper ci
